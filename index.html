@@ -1,1 +1,219 @@
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css">
+    <!-- <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/PSone.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/terminal.css@0.7.2/dist/terminal.min.css" /> -->
+    <link rel="stylesheet" href="https://unpkg.com/papercss@1.9.1/dist/paper.min.css" />
+</head>
+
+<body>
+    <div class="paper container">
+        <h1>To-do</h1>
+        <!-- <del>hhkvkhkjbjkbjkb</del> -->
+        <div id="form-area">
+            <span>Task Name</span>
+            <input id="task" type="text" name="Task">
+
+        </div>
+        <button onclick=add() type="submit">add</button>
+        <!-- <div id="form-area">
+        <span>Task Name</span>
+        <input id="task-del" type="text" name="Delete">
+        <button onclick=del() type="submit">Del</button>
+    </div> -->
+
+        <div style="margin-top: 10px;" id="form-area">
+            <span>Search</span>
+            <input id="task-ser" type="text" name="Search" onkeyup=ser()>
+            <!-- <button type="submit">Search</button> -->
+        </div>
+
+
+        <div style="margin-top: 15px;" id="show"></div>
+    </div>
+
+    <script async defer>
+        let tasks = []
+        let clearTask = []
+        function add() {
+
+            let value = document.getElementById("task").value
+            var list = document.getElementById("show")
+            list.innerHTML = ''
+            console.log(value)
+            tasks.push(value)
+
+            tasks.forEach((t, i) => {
+                document.getElementById("show").innerHTML += `<input id="cc${i}" class="nes-checkbox" type="checkbox" onchange="markAsDone(${i},this)" >`  + t + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+                console.log(document.getElementById(`cc${i}`).checked)
+            })
+            console.log(clearTask)
+            clearTask.push({
+                checkBool: false,
+                val: value
+            })
+
+
+            // tasks.map((r,i) => {
+            //     // gg[i] = tasks[i]
+            //     if(clearTask[i] == null || clearTask[i] == undefined)
+            //     clearTask[i] = {
+            //         checkBool:false,
+            //         val: r
+            //     }})
+
+            document.getElementById("task").value = ""
+        }
+
+
+        // function del() {
+
+        //     let delValue = document.getElementById("task-ser").value
+        //     var list = document.getElementById("show")
+
+        //     let delIndex
+        //     //console.log(tasks)
+        //     tasks.forEach((t, i) => {
+        //         console.log(t)
+        //         console.log(delValue)
+        //         if (t === delValue) {
+
+        //             delIndex = i
+        //             //console.log(t,delValue)
+        //             //tasks.splice(delIndex, 1)
+        //         }
+        //     })
+
+
+        //     list.innerHTML = ''
+        //     tasks.forEach((t, i) => {
+        //         list.innerHTML += '<li>' + t + '</li>' + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+        //     })
+        //     document.getElementById("task-del").value = ""
+        // }
+
+
+        function boom(index) {
+
+            var list = document.getElementById("show")
+            //console.log(index)
+            tasks.forEach((t, i) => {
+                // console.log(t)
+                // console.log(index)
+                if (i === index) {
+                    //console.log(t,delValue)
+                    tasks.splice(index, 1)
+                    clearTask.splice(index, 1)
+                }
+            })
+
+
+            list.innerHTML = ''
+            tasks.forEach((t, i) => {
+                list.innerHTML += `<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">` + t + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+            })
+            document.getElementById("task-del").value = ""
+        }
+
+
+
+
+        function ser() {
+
+            let serValue = document.getElementById("task-ser").value
+            var list = document.getElementById("show")
+            //console.log(serValue)
+
+
+            if (serValue !== "") {
+                list.innerHTML = ''
+                tasks.map((y, i) => {
+                    //console.log(y)
+                    if (y.includes(serValue)) {
+                        list.innerHTML += `<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">` + y + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+                    }
+                })
+            } else {
+                //console.log("list")
+                list.innerHTML = ''
+                tasks.forEach((y, i) => {
+                    list.innerHTML += `<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">` +  y + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+                })
+            }
+
+
+        }
+
+
+        function markAsDone(ind, k) {
+            //console.log(ind)
+            //console.log(k.checked)
+            //console.log(clearTask)
+
+
+
+            // if(tasks != [] && clearTask == []){
+            // //     tasks.map((r,i) => {
+            // //     // gg[i] = tasks[i]
+
+            // //     clearTask[i] = {
+            // //         checkBool:false,
+            // //         val: r
+            // //     }
+            // // }
+            // // )
+            // console.log(tasks)
+            // console.log(clearTask)
+            // }
+
+            // console.log(tasks)
+            // if(tasks && !clearTask){
+            //     console.log("gg")
+            // }
+            console.log(clearTask)
+            clearTask[ind].checkBool = !clearTask[ind].checkBool
+            // clearTask[ind].checkBool = k.checked
+            // console.log(clearTask)
+
+            var list = document.getElementById("show")
+            list.innerHTML = ''
+            //console.log(index)
+            // tasks.forEach((t, i) => {
+            //     if (i === ind && k.checked) {
+            //         list.innerHTML +=`<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">`+ '<del><li>' + t + '</li> <del>' + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+            //     } else {
+            //         list.innerHTML +=`<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">`+ '<li>' + t + '</li>' + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+            //     }
+            // })
+
+            clearTask.forEach((t, i) => {
+                //console.log(t)
+                if (t.checkBool === true) {
+                    list.innerHTML += `<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">` + '<del>'+ t.val+ '<del>' + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+
+                } else {
+                    list.innerHTML += `<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">` +  t.val  + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+
+                }
+                // else {
+                //  list.innerHTML +=`<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">`+ '<li>' + t.val + '</li>' + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+                // }
+            })
+            // list.innerHTML = ''
+            // tasks.forEach((t, i) => {
+            //     list.innerHTML +=`<input type="checkbox" id="myCheck" onchange="markAsDone(${i},this)">`+ '<li>' + t + '</li>' + `<button onclick=boom(${i}) class="${i}" id="bu">boom</button>`
+            // })
+        }
+    </script>
+</body>
+
+</html>
